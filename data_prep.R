@@ -27,6 +27,7 @@ library(data.table); library(haven)
 
 ### Paths
 in.dir <- paste0(root, "Project/COMIND/Poverty/Extract Data/Datasets/")
+out.path <- paste0(root, "Project/COMIND/Poverty/Extract Data/combined_LSMS.csv")
 
 ### Functions
 source(paste0(code.dir, "shared_functions/get_locations.R"))
@@ -50,6 +51,8 @@ dt.list <- lapply(file.list, function(file){
 	dt[, c("ihme_loc_id", "year") := .(loc, year)]
 })
 all.dt <- rbindlist(dt.list, use.names = T, fill = T)
+
+write.csv(all.dt, out.path, row.names = F)
 # Any variables included in all?
 non.na <- sapply(names(all.dt), function(var) {
 	!any(is.na(all.dt[[var]]))
